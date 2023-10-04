@@ -10,7 +10,6 @@ import { AuthModule } from './modules/auth/auth.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      ignoreEnvFile: true,
     }),
     MongooseModule.forRootAsync({
       inject: [ConfigService],
