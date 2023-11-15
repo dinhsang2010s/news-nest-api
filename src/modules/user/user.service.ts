@@ -12,7 +12,7 @@ export class UserService {
     private users: Model<IUser>,
   ) {}
 
-  async getOne(name: string): Promise<IUser | undefined> {
+  async getOne(name: string): Promise<IUser> {
     return await this.users.findOne({ name });
   }
 

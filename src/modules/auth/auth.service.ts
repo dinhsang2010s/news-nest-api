@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserService } from '../users/user.service';
+import { UserService } from '../user/user.service';
 import { LoginDto, RegisterDto } from 'src/dtos/request.dtos';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
@@ -31,7 +31,7 @@ export class AuthService {
     if (!isPasswordMatched)
       throw new UnauthorizedException('Invalid username or password!');
 
-    const token = await this.jwtService.signAsync({ i: user._id });
+    const token = await this.jwtService.signAsync({ id: user._id });
     return {
       type: 'Bearer',
       accessToken: token,

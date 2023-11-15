@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from 'src/dtos/request.dtos';
-import { Public } from 'src/guards/metadata';
+import { Public } from 'src/guards/objects';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Authentication')

@@ -2,5 +2,6 @@ import { Document } from 'mongoose';
 
 interface ICategory extends Document {
   name: string;
-  description: string;
+  createdBy: string;
+  updatedBy: string;
 }

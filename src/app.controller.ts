@@ -1,6 +1,6 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Public } from './guards/metadata';
+import { Public } from './guards/objects';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('App')

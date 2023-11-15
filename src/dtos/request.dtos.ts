@@ -20,3 +20,13 @@ export class LoginDto extends RegisterDto {
   @ApiProperty({ type: 'boolean', description: 'false', required: false })
   remember?: boolean;
 }
+
+export class CategoryDto {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({ type: 'string', description: 'Tin Tuc', required: true })
+  name: string;
+
+  createdBy: string;
+  updatedBy: string;
+}
