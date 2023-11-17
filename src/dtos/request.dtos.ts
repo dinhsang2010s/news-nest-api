@@ -21,12 +21,97 @@ export class LoginDto extends RegisterDto {
   remember?: boolean;
 }
 
+export class QueryPostDto {
+  offset: number;
+  pageSize: number;
+  orderBy: string;
+}
+
 export class CategoryDto {
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ type: 'string', description: 'Tin Tuc', required: true })
+  @ApiProperty({ type: 'Tin tức', required: true })
   name: string;
 
+  status: boolean;
+  createdBy: string;
+  updatedBy: string;
+}
+
+export class PostDto {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    type: 'string',
+    description: 'Toàn bộ thay đổi và thời gian cập nhật của ColorOS 14',
+    required: true,
+  })
+  title: string;
+
+  @IsString()
+  @ApiProperty({
+    type: 'string',
+    description:
+      'OPPO đã phát hành phiên bản beta của ColorOS 14 tới người dùng ở một số khu vực nhất định.',
+    required: false,
+  })
+  description: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    type: 'string',
+    description:
+      'Trong phiên bản ColorOS 14, OPPO đã giới thiệu một nền tảng hiệu suất mới tên là Trinity Engine. ',
+    required: true,
+  })
+  content: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    type: 'string',
+    description: 'abc123',
+    required: true,
+  })
+  categoryId: string;
+
+  @ApiProperty({
+    type: 'string',
+    description: '["http://images.googleusercontent","AAAAAAAA"]',
+    required: false,
+  })
+  image: string[];
+
+  @ApiProperty({
+    type: 'string',
+    description: '["http://images.googleusercontent","AAAAAAAA"]',
+    required: false,
+  })
+  link: string[];
+
+  @ApiProperty({
+    type: 'string',
+    description: '["ColorOS 14","AAAAAAAA"]',
+    required: false,
+  })
+  tagSearchIds: [];
+
+  @ApiProperty({
+    type: 'string',
+    description: 'Toàn bộ thay đổi và thời gian cập nhật của ColorOS 14',
+    required: false,
+  })
+  keyWordSeo: string;
+
+  @ApiProperty({
+    type: 'string',
+    description: 'toan-bo-tinh-nang-va-thay-doi-co-tren-coloros-14',
+    required: false,
+  })
+  descriptionSeo: string;
+
+  status: boolean;
   createdBy: string;
   updatedBy: string;
 }

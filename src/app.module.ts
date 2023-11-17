@@ -5,8 +5,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { ThrottlerModule } from '@nestjs/throttler';
 import { CategoryModule } from './modules/category/category.module';
+import { PostModule } from './modules/post/post.module';
 
 @Module({
   imports: [
@@ -33,6 +33,7 @@ import { CategoryModule } from './modules/category/category.module';
     AuthModule,
     UserModule,
     CategoryModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],

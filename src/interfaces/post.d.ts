@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 
-interface Post extends Document {
+interface IPost extends Document {
   title: string;
   description: string;
   content: string;
