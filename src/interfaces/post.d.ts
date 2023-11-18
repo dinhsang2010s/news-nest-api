@@ -1,6 +1,7 @@
 import { Document } from 'mongoose';
 
 interface IPost extends Document {
+  id: string;
   title: string;
   description: string;
   content: string;
@@ -11,7 +12,7 @@ interface IPost extends Document {
   tagSearchIds: string[];
   keyWordSeo: string;
   descriptionSeo: string;
-  status: boolean;
+  status: number;
   createdBy: string;
   updatedBy: string;
 }

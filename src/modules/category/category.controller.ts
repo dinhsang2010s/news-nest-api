@@ -14,6 +14,7 @@ import { Public } from 'src/guards/objects';
 import { ApiTags } from '@nestjs/swagger';
 import { CategoryService } from './category.service';
 import { CategoryDto } from 'src/dtos/request.dtos';
+import { status } from 'src/schemas/enums';
 
 @ApiTags('Category')
 @Controller('categories')
@@ -28,26 +29,31 @@ export class CategoryController {
   }
 
   @Post('')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  add(@Request() req, @Body() model: CategoryDto) {
-    return this.categoryService.add({
+  @HttpCode(HttpStatus.OK)
+  async add(@Request() req, @Body() model: CategoryDto) {
+    return await this.categoryService.add({
       ...model,
+      status: status.Running,
       createdBy: req.user.id,
     });
   }
 
   @Put(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  update(@Param('id') id: string, @Body() model: CategoryDto, @Request() req) {
-    return this.categoryService.update(id, {
+  @HttpCode(HttpStatus.OK)
+  async update(
+    @Param('id') id: string,
+    @Body() model: CategoryDto,
+    @Request() req,
+  ) {
+    return await this.categoryService.update(id, {
       ...model,
       updatedBy: req.user.id,
     });
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('id') id: any) {
-    return this.categoryService.delete(id);
+  @HttpCode(HttpStatus.OK)
+  async delete(@Param('id') id: any) {
+    await this.categoryService.delete(id);
   }
 }

@@ -21,7 +21,7 @@ export class LoginDto extends RegisterDto {
   remember?: boolean;
 }
 
-export class QueryPostDto {
+export class QueryPagination {
   offset: number;
   pageSize: number;
   orderBy: string;
@@ -30,10 +30,10 @@ export class QueryPostDto {
 export class CategoryDto {
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ type: 'Tin tức', required: true })
+  @ApiProperty({ type: 'string', required: true })
   name: string;
 
-  status: boolean;
+  status: number;
   createdBy: string;
   updatedBy: string;
 }
@@ -78,6 +78,7 @@ export class PostDto {
 
   @ApiProperty({
     type: 'string',
+    isArray: true,
     description: '["http://images.googleusercontent","AAAAAAAA"]',
     required: false,
   })
@@ -85,6 +86,7 @@ export class PostDto {
 
   @ApiProperty({
     type: 'string',
+    isArray: true,
     description: '["http://images.googleusercontent","AAAAAAAA"]',
     required: false,
   })
@@ -92,6 +94,7 @@ export class PostDto {
 
   @ApiProperty({
     type: 'string',
+    isArray: true,
     description: '["ColorOS 14","AAAAAAAA"]',
     required: false,
   })
@@ -99,19 +102,19 @@ export class PostDto {
 
   @ApiProperty({
     type: 'string',
-    description: 'Toàn bộ thay đổi và thời gian cập nhật của ColorOS 14',
+    description: 'toan-bo-tinh-nang-va-thay-doi-co-tren-coloros-14',
     required: false,
   })
   keyWordSeo: string;
 
   @ApiProperty({
     type: 'string',
-    description: 'toan-bo-tinh-nang-va-thay-doi-co-tren-coloros-14',
+    description: 'Toàn bộ thay đổi và thời gian cập nhật của ColorOS 14',
     required: false,
   })
   descriptionSeo: string;
 
-  status: boolean;
+  status: number;
   createdBy: string;
   updatedBy: string;
 }

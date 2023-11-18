@@ -1,8 +1,9 @@
 import { Document } from 'mongoose';
 
 interface ICategory extends Document {
+  id: string;
   name: string;
-  status: boolean;
+  status: number;
   createdBy: string;
   updatedBy: string;
 }

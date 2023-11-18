@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-@Schema({ timestamps: true, versionKey: false })
+@Schema({ timestamps: true })
 export class Post {
   @Prop() title: string;
   @Prop() description: string;
   @Prop() content: string;
-  @Prop() status: boolean = false;
+  @Prop() status: number;
   // @Prop() ownerId: string;
   @Prop() categoryId: string;
   @Prop([String]) image: string[];
