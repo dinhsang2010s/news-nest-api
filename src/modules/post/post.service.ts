@@ -52,12 +52,12 @@ export class PostService {
     };
   }
 
-  async add(model: PostDto): Promise<void> {
-    await this.posts.create(model);
+  async add(model: PostDto): Promise<IPost> {
+    return await this.posts.create({ ...model });
   }
 
-  async update(postId: string, model: PostDto): Promise<void> {
-    await this.posts.findOneAndUpdate({ _id: postId }, model);
+  async update(postId: string, model: PostDto): Promise<IPost> {
+    return await this.posts.findOneAndUpdate({ _id: postId }, { ...model });
   }
 
   async delete(postId: string): Promise<void> {

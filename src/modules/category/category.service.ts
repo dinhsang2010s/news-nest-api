@@ -17,11 +17,11 @@ export class CategoryService {
   }
 
   async add(model: CategoryDto): Promise<ICategory> {
-    return await this.categories.create(model);
+    return await this.categories.create({ ...model });
   }
 
   async update(catId: string, model: CategoryDto): Promise<ICategory> {
-    return await this.categories.findOneAndUpdate({ _id: catId }, model);
+    return await this.categories.findOneAndUpdate({ _id: catId }, { ...model });
   }
 
   async delete(catId: string): Promise<void> {

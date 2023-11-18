@@ -25,17 +25,36 @@ export class PostController {
   @Get('')
   @Public()
   @HttpCode(HttpStatus.OK)
-  getPagination(@Query() query: QueryPagination) {
-    return this.postService.getPagination(query);
+  async getPagination(@Query() query: QueryPagination) {
+    return await this.postService.getPagination(query);
   }
 
   @Post('')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  add(@Request() req, @Body() model: PostDto) {
-    return this.postService.add({
+  @HttpCode(HttpStatus.OK)
+  async add(@Request() req, @Body() model: PostDto) {
+    return await this.postService.add({
       ...model,
       status: status.Running,
       createdBy: req.user.id,
     });
+  }
+
+  @Put(':id')
+  @HttpCode(HttpStatus.OK)
+  async update(
+    @Param('id') id: string,
+    @Request() req,
+    @Body() model: PostDto,
+  ) {
+    return this.postService.update(id, {
+      ...model,
+      updatedBy: req.user.id,
+    });
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  async delete(@Param('id') id: any) {
+    await this.postService.delete(id);
   }
 }
