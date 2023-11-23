@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class RegisterDto {
   @IsString()
@@ -21,16 +28,29 @@ export class LoginDto extends RegisterDto {
   remember?: boolean;
 }
 
-export class QueryPagination {
-  offset: number;
-  pageSize: number;
+export class QueryPaginationDto {
+  @IsString()
+  @ApiProperty({ type: 'string', description: '0', default: '0' })
+  offset: string;
+
+  @IsString()
+  @ApiProperty({ type: 'string', description: '10', default: '10' })
+  pageSize: string;
+
+  @IsString()
+  @ApiProperty({
+    type: 'string',
+    description: 'createdAt,asc',
+    default: 'createdAt,asc',
+    required: false,
+  })
   orderBy: string;
 }
 
 export class CategoryDto {
   @IsString()
   @IsNotEmpty()
-  @ApiProperty({ type: 'string', required: true })
+  @ApiProperty({ type: 'string', description: 'Tin tức', required: true })
   name: string;
 
   status: number;
@@ -76,6 +96,16 @@ export class PostDto {
   })
   categoryId: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    type: 'string',
+    description: 'http://images.logo.com',
+    required: false,
+  })
+  imageTopic: string;
+
+  @IsArray()
   @ApiProperty({
     type: 'string',
     isArray: true,
@@ -84,6 +114,7 @@ export class PostDto {
   })
   image: string[];
 
+  @IsArray()
   @ApiProperty({
     type: 'string',
     isArray: true,
@@ -100,6 +131,8 @@ export class PostDto {
   })
   tagSearchIds: [];
 
+  @IsString()
+  @IsNotEmpty()
   @ApiProperty({
     type: 'string',
     description: 'toan-bo-tinh-nang-va-thay-doi-co-tren-coloros-14',
@@ -107,6 +140,8 @@ export class PostDto {
   })
   keyWordSeo: string;
 
+  @IsString()
+  @IsNotEmpty()
   @ApiProperty({
     type: 'string',
     description: 'Toàn bộ thay đổi và thời gian cập nhật của ColorOS 14',

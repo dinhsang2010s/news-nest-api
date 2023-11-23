@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Param,
   Post,
@@ -13,7 +14,7 @@ import {
 import { Public } from 'src/guards/objects';
 import { ApiTags } from '@nestjs/swagger';
 import { CategoryService } from './category.service';
-import { CategoryDto } from 'src/dtos/request.dtos';
+import { CategoryDto } from 'src/dtos/request.dtos/request.dtos';
 import { status } from 'src/schemas/enums';
 
 @ApiTags('Category')

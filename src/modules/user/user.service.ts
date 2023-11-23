@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { RegisterDto } from 'src/dtos/request.dtos';
-import { IUser } from 'src/interfaces/user';
+import { RegisterDto } from 'src/dtos/request.dtos/request.dtos';
+import { IUser } from 'src/dtos/response.dtos/user';
 import { User } from 'src/schemas/user.schema';
 
 @Injectable()

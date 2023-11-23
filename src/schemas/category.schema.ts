@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-@Schema({ timestamps: true, versionKey: false })
+@Schema({ timestamps: true, versionKey: false, validateBeforeSave: true })
 export class Category {
-  @Prop({ unique: [true, 'Category already exists!'] }) name: string;
+  @Prop({ unique: true }) name: string;
   @Prop() status: number;
   @Prop() createdBy: string;
   @Prop() updatedBy: string;

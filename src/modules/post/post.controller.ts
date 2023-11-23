@@ -14,7 +14,10 @@ import {
 import { Public } from 'src/guards/objects';
 import { ApiTags } from '@nestjs/swagger';
 import { PostService } from './post.service';
-import { PostDto, QueryPagination } from 'src/dtos/request.dtos';
+import {
+  PostDto,
+  QueryPaginationDto,
+} from 'src/dtos/request.dtos/request.dtos';
 import { status } from 'src/schemas/enums';
 
 @ApiTags('Post')
@@ -25,7 +28,7 @@ export class PostController {
   @Get('')
   @Public()
   @HttpCode(HttpStatus.OK)
-  async getPagination(@Query() query: QueryPagination) {
+  async getPagination(@Query() query: QueryPaginationDto) {
     return await this.postService.getPagination(query);
   }
 

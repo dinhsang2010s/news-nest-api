@@ -7,6 +7,7 @@ interface IPost extends Document {
   content: string;
   //ownerId: string;
   categoryId: string;
+  imageTopic: string;
   image: string[];
   link: string[];
   tagSearchIds: string[];
