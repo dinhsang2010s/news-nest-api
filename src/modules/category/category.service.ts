@@ -3,10 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CategoryDto } from 'src/dtos/request.dtos/request.dtos';
 import { ICategory } from 'src/dtos/response.dtos/category';
+import { CategoryInterface } from 'src/interfaces/category.interface';
 import { Category } from 'src/schemas/category.schema';
 
 @Injectable()
-export class CategoryService {
+export class CategoryService implements CategoryInterface {
   constructor(
     @InjectModel(Category.name)
     private categories: Model<ICategory>,

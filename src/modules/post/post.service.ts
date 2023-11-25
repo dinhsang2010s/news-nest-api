@@ -8,9 +8,10 @@ import {
 } from 'src/dtos/request.dtos/request.dtos';
 import { IPost } from 'src/dtos/response.dtos/post';
 import { Post } from 'src/schemas/post.schams';
+import { PostInterface } from 'src/interfaces/post.interface';
 
 @Injectable()
-export class PostService {
+export class PostService implements PostInterface {
   constructor(
     @InjectModel(Post.name)
     private posts: Model<IPost>,
