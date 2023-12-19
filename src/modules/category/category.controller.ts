@@ -29,6 +29,12 @@ export class CategoryController {
     return this.categoryService.getAll();
   }
 
+  @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  async getById(@Param('id') id: string) {
+    await this.categoryService.getById(id);
+  }
+
   @Post('')
   @HttpCode(HttpStatus.OK)
   async add(@Request() req, @Body() model: CategoryDto) {
@@ -54,7 +60,7 @@ export class CategoryController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  async delete(@Param('id') id: any) {
+  async delete(@Param('id') id: string) {
     await this.categoryService.delete(id);
   }
 }

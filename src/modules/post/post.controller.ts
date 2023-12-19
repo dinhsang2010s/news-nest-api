@@ -32,6 +32,13 @@ export class PostController {
     return await this.postService.getPagination(query);
   }
 
+  @Get(':id')
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  async getById(@Param('id') id: string) {
+    return await this.postService.getById(id);
+  }
+
   @Post('')
   @HttpCode(HttpStatus.OK)
   async add(@Request() req, @Body() model: PostDto) {

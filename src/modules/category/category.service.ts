@@ -14,19 +14,21 @@ export class CategoryService implements CategoryInterface {
   ) {}
 
   async getAll(): Promise<ICategory[]> {
-    return await this.categories.find();
+    return await this.categories.find().sort({ createdAt: -1 });
+  }
+
+  async getById(id: string): Promise<ICategory> {
+    return await this.categories.findById(id);
   }
 
   async add(model: CategoryDto): Promise<ICategory> {
-    const res = await this.categories.create(model);
-    return res;
+    return await this.categories.create(model);
   }
 
   async update(catId: string, model: CategoryDto): Promise<ICategory> {
-    const res = await this.categories.findByIdAndUpdate({ _id: catId }, model, {
+    return await this.categories.findByIdAndUpdate({ _id: catId }, model, {
       new: true,
     });
-    return res;
   }
 
   async delete(catId: string): Promise<void> {

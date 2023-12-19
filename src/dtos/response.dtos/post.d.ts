@@ -5,7 +5,6 @@ interface IPost extends Document {
   title: string;
   description: string;
   content: string;
-  //ownerId: string;
   categoryId: string;
   imageTopic: string;
   image: string[];
@@ -13,7 +12,6 @@ interface IPost extends Document {
   tagSearchIds: string[];
   keyWordSeo: string;
   descriptionSeo: string;
-  status: number;
   createdBy: string;
   updatedBy: string;
 }

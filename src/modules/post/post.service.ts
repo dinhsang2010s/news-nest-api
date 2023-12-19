@@ -18,11 +18,18 @@ export class PostService implements PostInterface {
   ) {}
 
   async getPagination(query: QueryPaginationDto): Promise<Pagination<IPost[]>> {
-    const { offset, pageSize, orderBy } = query;
+    const { offset, pageSize, orderBy, q } = query;
     const sortBy = orderBy?.split(',');
 
     const data = await this.posts.aggregate([
-      { $match: { status: 1 } },
+      {
+        $match: {
+          title: {
+            $regex: q,
+            $options: 'i',
+          },
+        },
+      },
       { $skip: parseInt(offset) ?? 0 },
       { $limit: parseInt(pageSize) ?? 10 },
       {
@@ -106,6 +113,10 @@ export class PostService implements PostInterface {
       data,
       total: (await this.posts.countDocuments()) ?? 0,
     };
+  }
+
+  async getById(id: string): Promise<IPost> {
+    return await this.posts.findById(id);
   }
 
   async add(model: PostDto): Promise<IPost> {
