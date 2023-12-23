@@ -42,7 +42,7 @@ export class PostController {
   @Post('')
   @HttpCode(HttpStatus.OK)
   async add(@Request() req, @Body() model: PostDto) {
-    return await this.postService.add({
+    return await this.postService.update('', {
       ...model,
       status: status.Running,
       createdBy: req.user.id,

@@ -9,6 +9,7 @@ import {
 import { IPost } from 'src/dtos/response.dtos/post';
 import { Post } from 'src/schemas/post.schams';
 import { PostInterface } from 'src/interfaces/post.interface';
+import { status } from 'src/schemas/enums';
 
 @Injectable()
 export class PostService implements PostInterface {
@@ -24,6 +25,7 @@ export class PostService implements PostInterface {
     const data = await this.posts.aggregate([
       {
         $match: {
+          status: status.Running,
           title: {
             $regex: q,
             $options: 'i',
@@ -119,11 +121,8 @@ export class PostService implements PostInterface {
     return await this.posts.findById(id);
   }
 
-  async add(model: PostDto): Promise<IPost> {
-    return await this.posts.create(model);
-  }
-
   async update(postId: string, model: PostDto): Promise<IPost> {
+    if (!postId || postId === '') await this.posts.create(model);
     return await this.posts.findOneAndUpdate({ _id: postId }, model, {
       new: true,
     });

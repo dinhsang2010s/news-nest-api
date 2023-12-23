@@ -57,6 +57,7 @@ export class CategoryDto {
   @ApiProperty({ type: 'string', description: 'Tin tức', required: true })
   name: string;
 
+  status: number;
   createdBy: string;
   updatedBy: string;
 }
@@ -151,6 +152,8 @@ export class PostDto {
     required: false,
   })
   descriptionSeo: string;
+
+  status: number;
   createdBy: string;
   updatedBy: string;
 }

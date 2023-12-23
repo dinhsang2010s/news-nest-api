@@ -38,7 +38,7 @@ export class CategoryController {
   @Post('')
   @HttpCode(HttpStatus.OK)
   async add(@Request() req, @Body() model: CategoryDto) {
-    return await this.categoryService.add({
+    return await this.categoryService.update('', {
       ...model,
       status: status.Running,
       createdBy: req.user.id,

@@ -5,10 +5,10 @@ export class Post {
   @Prop({ index: true }) title: string;
   @Prop() description: string;
   @Prop() content: string;
-  // @Prop() ownerId: string;
+  @Prop() status: number;
   @Prop() categoryId: string;
   @Prop() imageTopic: string;
-  @Prop([String]) image: string[];
+  @Prop() image: string;
   @Prop([String]) link: string[];
   @Prop([String]) tagSearchIds: string[];
   @Prop() keyWordSeo: string;
