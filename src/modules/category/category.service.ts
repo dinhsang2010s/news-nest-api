@@ -5,7 +5,6 @@ import { CategoryDto } from 'src/dtos/request.dtos/request.dtos';
 import { ICategory } from 'src/dtos/response.dtos/category';
 import { CategoryInterface } from 'src/interfaces/category.interface';
 import { Category } from 'src/schemas/category.schema';
-import { status } from 'src/schemas/enums';
 
 @Injectable()
 export class CategoryService implements CategoryInterface {
@@ -14,8 +13,11 @@ export class CategoryService implements CategoryInterface {
     private categories: Model<ICategory>,
   ) {}
 
-  async getAll(): Promise<ICategory[]> {
-    return await this.categories.find().sort({ createdAt: -1 });
+  async getAll(q?: string): Promise<ICategory[]> {
+    let query = {};
+    if (q) query = { ...query, name: new RegExp(q, 'i') };
+
+    return await this.categories.find(query).sort({ createdAt: -1 });
   }
 
   async getById(id: string): Promise<ICategory> {

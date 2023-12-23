@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Request,
 } from '@nestjs/common';
 import { Public } from 'src/guards/objects';
@@ -25,8 +26,8 @@ export class CategoryController {
   @Get('')
   @Public()
   @HttpCode(HttpStatus.OK)
-  getAll() {
-    return this.categoryService.getAll();
+  getAll(@Query() query: { q: string }) {
+    return this.categoryService.getAll(query.q ?? '');
   }
 
   @Get(':id')
