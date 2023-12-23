@@ -9,7 +9,6 @@ import {
 import { IPost } from 'src/dtos/response.dtos/post';
 import { Post } from 'src/schemas/post.schams';
 import { PostInterface } from 'src/interfaces/post.interface';
-import { status } from 'src/schemas/enums';
 
 @Injectable()
 export class PostService implements PostInterface {
@@ -25,7 +24,6 @@ export class PostService implements PostInterface {
     const data = await this.posts.aggregate([
       {
         $match: {
-          status: status.Running,
           title: {
             $regex: q,
             $options: 'i',

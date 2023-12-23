@@ -15,9 +15,7 @@ export class CategoryService implements CategoryInterface {
   ) {}
 
   async getAll(): Promise<ICategory[]> {
-    return await this.categories
-      .find({ status: status.Running })
-      .sort({ createdAt: -1 });
+    return await this.categories.find().sort({ createdAt: -1 });
   }
 
   async getById(id: string): Promise<ICategory> {
