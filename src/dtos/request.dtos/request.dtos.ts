@@ -30,25 +30,40 @@ export class LoginDto extends RegisterDto {
 
 export class QueryPaginationDto {
   @IsString()
-  @ApiProperty({ type: 'string', description: '0', default: '0' })
-  offset: string;
-
-  @IsString()
-  @ApiProperty({ type: 'string', description: '10', default: '10' })
-  pageSize: string;
+  @ApiProperty({
+    type: 'string',
+    description: '0',
+    default: 0,
+    required: false,
+  })
+  offset?: string = '0';
 
   @IsString()
   @ApiProperty({
     type: 'string',
-    description: 'createdAt,asc',
-    default: 'createdAt,asc',
+    description: '10',
+    default: 10,
     required: false,
   })
-  orderBy: string;
+  pageSize?: string = '20';
 
   @IsString()
-  @ApiProperty({ type: 'string', description: 'a' })
-  q: string;
+  @ApiProperty({
+    type: 'string',
+    description: 'createdAt',
+    default: '',
+    required: false,
+  })
+  orderBy?: string = '';
+
+  @IsString()
+  @ApiProperty({
+    type: 'string',
+    description: 'a',
+    default: '',
+    required: false,
+  })
+  q?: string = '';
 }
 
 export class CategoryDto {

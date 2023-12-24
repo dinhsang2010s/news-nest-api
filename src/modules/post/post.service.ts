@@ -31,10 +31,10 @@ export class PostService implements PostInterface {
       {
         $match: q ? searchQ : {},
       },
-      { $skip: parseInt(offset) ?? 0 },
-      { $limit: parseInt(pageSize) ?? 10 },
+      { $skip: parseInt(offset) },
+      { $limit: parseInt(pageSize) },
       {
-        $sort: { [orderBy ?? 'createdAt']: -1 },
+        $sort: { [orderBy || 'createdAt']: -1 },
       },
       {
         $lookup: {
