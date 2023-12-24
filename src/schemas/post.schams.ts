@@ -8,9 +8,6 @@ export class Post {
   @Prop() status: number;
   @Prop() categoryId: string;
   @Prop() imageTopic: string;
-  @Prop() image: string;
-  @Prop([String]) link: string[];
-  @Prop([String]) tagSearchIds: string[];
   @Prop() keyWordSeo: string;
   @Prop() descriptionSeo: string;
   @Prop() createdBy: string;

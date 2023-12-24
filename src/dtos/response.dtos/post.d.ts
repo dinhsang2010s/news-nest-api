@@ -8,9 +8,6 @@ interface IPost extends Document {
   content: string;
   categoryId: string;
   imageTopic: string;
-  image: string[];
-  link: string[];
-  tagSearchIds: string[];
   keyWordSeo: string;
   descriptionSeo: string;
   createdBy: string;
