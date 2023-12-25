@@ -6,8 +6,9 @@ interface IPost extends Document {
   description: string;
   status: number;
   content: string;
-  categoryId: string;
   imageTopic: string;
+  categoryId: string;
+  categoryName: string;
   keyWordSeo: string;
   descriptionSeo: string;
   createdBy: string;

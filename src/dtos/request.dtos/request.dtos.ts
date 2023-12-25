@@ -124,32 +124,6 @@ export class PostDto {
   })
   imageTopic: string;
 
-  @IsArray()
-  @ApiProperty({
-    type: 'string',
-    isArray: true,
-    description: '["http://images.googleusercontent","AAAAAAAA"]',
-    required: false,
-  })
-  image: string[];
-
-  @IsArray()
-  @ApiProperty({
-    type: 'string',
-    isArray: true,
-    description: '["http://images.googleusercontent","AAAAAAAA"]',
-    required: false,
-  })
-  link: string[];
-
-  @ApiProperty({
-    type: 'string',
-    isArray: true,
-    description: '["ColorOS 14","AAAAAAAA"]',
-    required: false,
-  })
-  tagSearchIds: [];
-
   @IsString()
   @IsNotEmpty()
   @ApiProperty({

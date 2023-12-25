@@ -80,19 +80,49 @@ export class PostService implements PostInterface {
                 $expr: {
                   $and: [
                     {
-                      $eq: ['$_id', '$createdBy'],
+                      $eq: ['$_id', '$$userId'],
                     },
                   ],
                 },
               },
             },
           ],
-          as: 'user',
+          as: 'create',
         },
       },
       {
         $unwind: {
-          path: '$user',
+          path: '$create',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          let: {
+            userId: {
+              $toObjectId: '$updatedBy',
+            },
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    {
+                      $eq: ['$_id', '$$userId'],
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+          as: 'update',
+        },
+      },
+      {
+        $unwind: {
+          path: '$update',
           preserveNullAndEmptyArrays: true,
         },
       },
@@ -102,10 +132,17 @@ export class PostService implements PostInterface {
           id: '$_id',
           title: 1,
           description: 1,
+          content: 1,
           imageTopic: 1,
+          categoryId: '$cat._id',
           categoryName: '$cat.name',
-          userName: '$user.name',
+          createdBy: '$create.name',
+          updatedBy: '$update.name',
+          keyWordSeo: 1,
+          descriptionSeo: 1,
+          status: 1,
           createdAt: 1,
+          updatedAt: 1,
         },
       },
     ]);
@@ -121,7 +158,8 @@ export class PostService implements PostInterface {
   }
 
   async update(postId: string, model: PostDto): Promise<IPost> {
-    if (!postId || postId === '') await this.posts.create(model);
+    if (!postId || postId === '') return await this.posts.create({ ...model });
+
     return await this.posts.findOneAndUpdate({ _id: postId }, model, {
       new: true,
     });
