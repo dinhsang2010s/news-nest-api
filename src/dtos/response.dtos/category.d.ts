@@ -6,4 +6,6 @@ interface ICategory extends Document {
   status: number;
   createdBy: string;
   updatedBy: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

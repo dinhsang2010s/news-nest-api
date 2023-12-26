@@ -14,10 +14,51 @@ export class CategoryService implements CategoryInterface {
   ) {}
 
   async getAll(q?: string): Promise<ICategory[]> {
-    let query = {};
-    if (q) query = { ...query, name: new RegExp(q, 'i') };
+    const searchQ = {
+      name: {
+        $regex: q,
+        $options: 'i',
+      },
+    };
 
-    return await this.categories.find(query).sort({ createdAt: -1 });
+    return await this.categories.aggregate([
+      { $match: q ? searchQ : {} },
+      { $sort: { createdAt: -1 } },
+      {
+        $lookup: {
+          from: 'users',
+          let: { userId: { $toObjectId: '$createdBy' } },
+          pipeline: [
+            { $match: { $expr: { $and: [{ $eq: ['$_id', '$$userId'] }] } } },
+          ],
+          as: 'create',
+        },
+      },
+      { $unwind: { path: '$create', preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: 'users',
+          let: { userId: { $toObjectId: '$updatedBy' } },
+          pipeline: [
+            { $match: { $expr: { $and: [{ $eq: ['$_id', '$$userId'] }] } } },
+          ],
+          as: 'update',
+        },
+      },
+      { $unwind: { path: '$update', preserveNullAndEmptyArrays: true } },
+      {
+        $project: {
+          _id: 0,
+          id: '$_id',
+          name: 1,
+          createdBy: '$create.name',
+          updatedBy: '$update.name',
+          status: 1,
+          createdAt: 1,
+          updatedAt: 1,
+        },
+      },
+    ]);
   }
 
   async getById(id: string): Promise<ICategory> {

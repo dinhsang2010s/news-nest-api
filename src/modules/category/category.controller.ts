@@ -43,6 +43,7 @@ export class CategoryController {
       ...model,
       status: status.Running,
       createdBy: req.user.id,
+      createdAt: new Date(),
     });
   }
 
@@ -56,6 +57,7 @@ export class CategoryController {
     return await this.categoryService.update(id, {
       ...model,
       updatedBy: req.user.id,
+      updatedAt: new Date(),
     });
   }
 

@@ -46,6 +46,7 @@ export class PostController {
       ...model,
       status: status.Running,
       createdBy: req.user.id,
+      createdAt: new Date(),
     });
   }
 
@@ -59,6 +60,7 @@ export class PostController {
     return this.postService.update(id, {
       ...model,
       updatedBy: req.user.id,
+      updatedAt: new Date(),
     });
   }
 

@@ -75,6 +75,8 @@ export class CategoryDto {
   status: number;
   createdBy: string;
   updatedBy: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export class PostDto {
@@ -145,4 +147,6 @@ export class PostDto {
   status: number;
   createdBy: string;
   updatedBy: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
