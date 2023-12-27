@@ -66,11 +66,13 @@ export class CategoryService implements CategoryInterface {
   }
 
   async update(catId: string, model: CategoryDto): Promise<ICategory> {
+    console.log(model);
+
     if (!catId || catId === '') {
       const cat = await this.categories.findOne({ name: model.name });
       if (cat)
         throw new BadRequestException(
-          `Category [${model.name}] already exists`,
+          `Category [ ${model.name} ] already exists`,
         );
 
       return await this.categories.create(model);

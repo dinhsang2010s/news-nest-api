@@ -16,7 +16,6 @@ import { Public } from 'src/guards/objects';
 import { ApiTags } from '@nestjs/swagger';
 import { CategoryService } from './category.service';
 import { CategoryDto } from 'src/dtos/request.dtos/request.dtos';
-import { status } from 'src/schemas/enums';
 
 @ApiTags('Category')
 @Controller('categories')
@@ -41,7 +40,6 @@ export class CategoryController {
   async add(@Request() req, @Body() model: CategoryDto) {
     return await this.categoryService.update('', {
       ...model,
-      status: status.Running,
       createdBy: req.user.id,
       createdAt: new Date(),
     });

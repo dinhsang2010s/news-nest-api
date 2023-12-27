@@ -18,7 +18,6 @@ import {
   PostDto,
   QueryPaginationDto,
 } from 'src/dtos/request.dtos/request.dtos';
-import { status } from 'src/schemas/enums';
 
 @ApiTags('Post')
 @Controller('posts')
@@ -44,7 +43,6 @@ export class PostController {
   async add(@Request() req, @Body() model: PostDto) {
     return await this.postService.update('', {
       ...model,
-      status: status.Running,
       createdBy: req.user.id,
       createdAt: new Date(),
     });

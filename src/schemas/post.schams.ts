@@ -2,11 +2,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({ versionKey: false })
 export class Post {
-  @Prop({ index: true }) title: string;
+  @Prop({ index: true, required: true }) title: string;
   @Prop() description: string;
   @Prop() content: string;
   @Prop() status: number;
-  @Prop() categoryId: string;
+  @Prop({ index: true, required: true }) categoryId: string;
   @Prop() imageTopic: string;
   @Prop() keyWordSeo: string;
   @Prop() descriptionSeo: string;
