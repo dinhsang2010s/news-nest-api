@@ -66,8 +66,6 @@ export class CategoryService implements CategoryInterface {
   }
 
   async update(catId: string, model: CategoryDto): Promise<ICategory> {
-    console.log(model);
-
     if (!catId || catId === '') {
       const cat = await this.categories.findOne({ name: model.name });
       if (cat)

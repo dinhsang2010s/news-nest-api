@@ -28,14 +28,10 @@ export class PostService implements PostInterface {
     };
 
     const data = await this.posts.aggregate([
-      {
-        $match: q ? searchQ : {},
-      },
+      { $match: q ? searchQ : {} },
+      { $sort: { [orderBy || 'createdAt']: -1 } },
       { $skip: parseInt(offset) },
       { $limit: parseInt(pageSize) },
-      {
-        $sort: { [orderBy || 'createdAt']: -1 },
-      },
       {
         $lookup: {
           from: 'categories',

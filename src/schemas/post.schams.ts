@@ -7,9 +7,9 @@ export class Post {
   @Prop() content: string;
   @Prop() status: number;
   @Prop({ index: true, required: true }) categoryId: string;
-  @Prop() imageTopic: string;
-  @Prop() keyWordSeo: string;
-  @Prop() descriptionSeo: string;
+  @Prop({ required: true }) imageTopic: string;
+  @Prop({ required: true }) keyWordSeo: string;
+  @Prop({ required: true }) descriptionSeo: string;
   @Prop() createdBy: string;
   @Prop() updatedBy: string;
   @Prop() createdAt: Date;
