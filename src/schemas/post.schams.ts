@@ -4,7 +4,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 export class Post {
   @Prop({ index: true, required: true }) title: string;
   @Prop() description: string;
-  @Prop() content: string;
+  @Prop({ required: true }) content: string;
   @Prop() status: number;
   @Prop({ index: true, required: true }) categoryId: string;
   @Prop({ required: true }) imageTopic: string;
