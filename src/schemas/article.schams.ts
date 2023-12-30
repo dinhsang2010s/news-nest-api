@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({ versionKey: false })
-export class Post {
+export class Article {
   @Prop({ index: true, required: true }) title: string;
   @Prop() description: string;
   @Prop({ required: true }) content: string;
@@ -16,4 +16,4 @@ export class Post {
   @Prop() updatedAt: Date;
 }
 
-export const PostSchema = SchemaFactory.createForClass(Post);
+export const ArticleSchema = SchemaFactory.createForClass(Article);

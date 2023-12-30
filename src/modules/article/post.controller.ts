@@ -13,36 +13,38 @@ import {
 } from '@nestjs/common';
 import { Public } from 'src/guards/objects';
 import { ApiTags } from '@nestjs/swagger';
-import { PostService } from './post.service';
+import { ArticleService } from './post.service';
 import {
-  PostDto,
+  ArticleDto,
   QueryPaginationDto,
 } from 'src/dtos/request.dtos/request.dtos';
+import { Status } from 'src/schemas/enums';
 
-@ApiTags('Post')
-@Controller('posts')
-export class PostController {
-  constructor(private postService: PostService) {}
+@ApiTags('Article')
+@Controller('articles')
+export class ArticleController {
+  constructor(private articleService: ArticleService) {}
 
   @Get('')
   @Public()
   @HttpCode(HttpStatus.OK)
   async getPagination(@Query() query: QueryPaginationDto) {
-    return await this.postService.getPagination(query);
+    return await this.articleService.getPagination(query);
   }
 
   @Get(':id')
   @Public()
   @HttpCode(HttpStatus.OK)
   async getById(@Param('id') id: string) {
-    return await this.postService.getById(id);
+    return await this.articleService.getById(id);
   }
 
   @Post('')
   @HttpCode(HttpStatus.OK)
-  async add(@Request() req, @Body() model: PostDto) {
-    return await this.postService.update('', {
+  async add(@Request() req, @Body() model: ArticleDto) {
+    return await this.articleService.update('', {
       ...model,
+      status: model.status ?? Status.Running,
       createdBy: req.user.id,
       createdAt: new Date(),
     });
@@ -53,9 +55,9 @@ export class PostController {
   async update(
     @Param('id') id: string,
     @Request() req,
-    @Body() model: PostDto,
+    @Body() model: ArticleDto,
   ) {
-    return this.postService.update(id, {
+    return this.articleService.update(id, {
       ...model,
       updatedBy: req.user.id,
       updatedAt: new Date(),
@@ -65,6 +67,6 @@ export class PostController {
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   async delete(@Param('id') id: any) {
-    await this.postService.delete(id);
+    await this.articleService.delete(id);
   }
 }

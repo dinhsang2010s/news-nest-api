@@ -79,7 +79,7 @@ export class CategoryDto {
   updatedAt: Date;
 }
 
-export class PostDto {
+export class ArticleDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
@@ -89,7 +89,6 @@ export class PostDto {
   })
   title: string;
 
-  @IsString()
   @ApiProperty({
     type: 'string',
     description:

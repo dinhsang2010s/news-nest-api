@@ -6,7 +6,7 @@ import { MongooseModule, SchemaOptions } from '@nestjs/mongoose';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CategoryModule } from './modules/category/category.module';
-import { PostModule } from './modules/post/post.module';
+import { ArticleModule } from './modules/article/article.module';
 import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './utils/all-exception.filter';
 
@@ -54,7 +54,7 @@ const options: SchemaOptions = {
     AuthModule,
     UserModule,
     CategoryModule,
-    PostModule,
+    ArticleModule,
   ],
   controllers: [AppController],
   providers: [

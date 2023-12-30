@@ -3,21 +3,23 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Pagination } from 'src/dtos/response.dtos/pagination';
 import {
-  PostDto,
+  ArticleDto,
   QueryPaginationDto,
 } from 'src/dtos/request.dtos/request.dtos';
-import { IPost } from 'src/dtos/response.dtos/post';
-import { Post } from 'src/schemas/post.schams';
-import { PostInterface } from 'src/interfaces/post.interface';
+import { IArticle } from 'src/dtos/response.dtos/article';
+import { Article } from 'src/schemas/article.schams';
+import { ArticleInterface } from 'src/interfaces/article.interface';
 
 @Injectable()
-export class PostService implements PostInterface {
+export class ArticleService implements ArticleInterface {
   constructor(
-    @InjectModel(Post.name)
-    private posts: Model<IPost>,
+    @InjectModel(Article.name)
+    private articles: Model<IArticle>,
   ) {}
 
-  async getPagination(query: QueryPaginationDto): Promise<Pagination<IPost[]>> {
+  async getPagination(
+    query: QueryPaginationDto,
+  ): Promise<Pagination<IArticle[]>> {
     const { offset, pageSize, orderBy, q } = query;
 
     const searchQ = {
@@ -27,7 +29,7 @@ export class PostService implements PostInterface {
       },
     };
 
-    const data = await this.posts.aggregate([
+    const data = await this.articles.aggregate([
       { $match: q ? searchQ : {} },
       { $sort: { [orderBy || 'createdAt']: -1 } },
       { $skip: parseInt(offset) },
@@ -145,23 +147,24 @@ export class PostService implements PostInterface {
 
     return {
       data,
-      total: (await this.posts.countDocuments()) ?? 0,
+      total: (await this.articles.countDocuments()) ?? 0,
     };
   }
 
-  async getById(id: string): Promise<IPost> {
-    return await this.posts.findById(id);
+  async getById(id: string): Promise<IArticle> {
+    return await this.articles.findById(id);
   }
 
-  async update(postId: string, model: PostDto): Promise<IPost> {
-    if (!postId || postId === '') return await this.posts.create({ ...model });
+  async update(articleId: string, model: ArticleDto): Promise<IArticle> {
+    if (!articleId || articleId === '')
+      return await this.articles.create({ ...model });
 
-    return await this.posts.findOneAndUpdate({ _id: postId }, model, {
+    return await this.articles.findOneAndUpdate({ _id: articleId }, model, {
       new: true,
     });
   }
 
-  async delete(postId: string): Promise<void> {
-    await this.posts.deleteOne({ _id: postId });
+  async delete(articleId: string): Promise<void> {
+    await this.articles.deleteOne({ _id: articleId });
   }
 }
