@@ -26,7 +26,6 @@ export class ArticleController {
   constructor(private articleService: ArticleService) {}
 
   @Get('')
-  @Public()
   @HttpCode(HttpStatus.OK)
   async getPagination(@Query() query: QueryPaginationDto) {
     return await this.articleService.getPagination(query);

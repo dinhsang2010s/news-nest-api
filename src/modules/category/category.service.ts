@@ -1,8 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CategoryDto } from 'src/dtos/request.dtos/request.dtos';
+import {
+  CategoryDto,
+  QueryPaginationDto,
+} from 'src/dtos/request.dtos/request.dtos';
 import { ICategory } from 'src/dtos/response.dtos/category';
+import { Pagination } from 'src/dtos/response.dtos/pagination';
 import { CategoryInterface } from 'src/interfaces/category.interface';
 import { Category } from 'src/schemas/category.schema';
 
@@ -13,7 +17,10 @@ export class CategoryService implements CategoryInterface {
     private categories: Model<ICategory>,
   ) {}
 
-  async getAll(q?: string): Promise<ICategory[]> {
+  async getPagination(
+    query: QueryPaginationDto,
+  ): Promise<Pagination<ICategory[]>> {
+    const { offset, pageSize, orderBy, q } = query;
     const searchQ = {
       name: {
         $regex: q,
@@ -21,9 +28,11 @@ export class CategoryService implements CategoryInterface {
       },
     };
 
-    return await this.categories.aggregate([
+    const data = await this.categories.aggregate([
       { $match: q ? searchQ : {} },
-      { $sort: { createdAt: -1 } },
+      { $sort: { [orderBy || 'createdAt']: -1 } },
+      { $skip: parseInt(offset) },
+      { $limit: parseInt(pageSize) },
       {
         $lookup: {
           from: 'users',
@@ -59,6 +68,11 @@ export class CategoryService implements CategoryInterface {
         },
       },
     ]);
+
+    return {
+      data,
+      total: (await this.categories.countDocuments()) ?? 0,
+    };
   }
 
   async getById(id: string): Promise<ICategory> {

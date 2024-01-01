@@ -21,7 +21,6 @@ export class ArticleService implements ArticleInterface {
     query: QueryPaginationDto,
   ): Promise<Pagination<IArticle[]>> {
     const { offset, pageSize, orderBy, q } = query;
-
     const searchQ = {
       title: {
         $regex: q,

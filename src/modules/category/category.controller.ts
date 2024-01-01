@@ -27,7 +27,7 @@ export class CategoryController {
   @Public()
   @HttpCode(HttpStatus.OK)
   getAll(@Query() query: { q: string }) {
-    return this.categoryService.getAll(query.q ?? '');
+    return this.categoryService.getPagination(query.q ?? '');
   }
 
   @Get(':id')
