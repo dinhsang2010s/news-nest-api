@@ -15,7 +15,10 @@ import {
 import { Public } from 'src/guards/objects';
 import { ApiTags } from '@nestjs/swagger';
 import { CategoryService } from './category.service';
-import { CategoryDto } from 'src/dtos/request.dtos/request.dtos';
+import {
+  CategoryDto,
+  QueryPaginationDto,
+} from 'src/dtos/request.dtos/request.dtos';
 import { Status } from 'src/schemas/enums';
 
 @ApiTags('Category')
@@ -24,10 +27,9 @@ export class CategoryController {
   constructor(private categoryService: CategoryService) {}
 
   @Get('')
-  @Public()
   @HttpCode(HttpStatus.OK)
-  getAll(@Query() query: { q: string }) {
-    return this.categoryService.getPagination(query.q ?? '');
+  async getPagination(@Query() query: QueryPaginationDto) {
+    return await this.categoryService.getPagination(query);
   }
 
   @Get(':id')

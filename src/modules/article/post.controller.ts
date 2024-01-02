@@ -10,6 +10,8 @@ import {
   Put,
   Query,
   Request,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Public } from 'src/guards/objects';
 import { ApiTags } from '@nestjs/swagger';
@@ -19,6 +21,24 @@ import {
   QueryPaginationDto,
 } from 'src/dtos/request.dtos/request.dtos';
 import { Status } from 'src/schemas/enums';
+import path = require('path');
+import { diskStorage } from 'multer';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Observable, of } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
+
+export const storage = {
+  storage: diskStorage({
+    destination: './uploads',
+    filename: (req, file, cb) => {
+      const filename: string =
+        path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+      const extension: string = path.parse(file.originalname).ext;
+
+      cb(null, `${filename}${extension}`);
+    },
+  }),
+};
 
 @ApiTags('Article')
 @Controller('articles')
@@ -67,5 +87,11 @@ export class ArticleController {
   @HttpCode(HttpStatus.OK)
   async delete(@Param('id') id: any) {
     await this.articleService.delete(id);
+  }
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file', storage))
+  uploadFile(@UploadedFile() file): Observable<{ pathImage: string }> {
+    return of({ pathImage: file.pathImage });
   }
 }

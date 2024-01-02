@@ -9,6 +9,7 @@ import { CategoryModule } from './modules/category/category.module';
 import { ArticleModule } from './modules/article/article.module';
 import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './utils/all-exception.filter';
+import { UploadModule } from './modules/upload/upload.module';
 
 const options: SchemaOptions = {
   toJSON: {
@@ -55,6 +56,7 @@ const options: SchemaOptions = {
     UserModule,
     CategoryModule,
     ArticleModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [
