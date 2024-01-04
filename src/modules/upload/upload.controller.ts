@@ -13,8 +13,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { v4 as uuidv4 } from 'uuid';
-import { createReadStream } from 'fs';
 import { join, parse } from 'path';
+import { Public } from '../../guards/objects';
 
 export const storage = {
   storage: diskStorage({
@@ -35,6 +35,7 @@ export class UploadController {
   constructor() {}
 
   @Get(':id')
+  @Public()
   @HttpCode(HttpStatus.OK)
   getFile(@Param('id') id: string, @Res() res) {
     return res.sendFile(join(process.cwd(), 'wp-contents/' + id));
@@ -42,7 +43,7 @@ export class UploadController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', storage))
-  uploadFile(@UploadedFile() file): { pathImage: string } {
-    return { pathImage: file.filename };
+  uploadFile(@UploadedFile() file): { fileName: string } {
+    return { fileName:  file.filename };
   }
 }

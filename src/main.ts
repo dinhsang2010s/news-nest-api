@@ -11,7 +11,26 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use(helmet());
-  app.enableCors();
+  app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        "default-src": ["'self'"],
+        "connect-src": ["'self'", "'unsafe-inline'"],
+        "img-src": ["'self'", "data:"],
+        "style-src-elem": ["'self'", "data:"],
+        "script-src": ["'unsafe-inline'", "'self'"],
+        "object-src": ["'none'"],
+      },
+    })
+  );
+
+  app.use(helmet.crossOriginResourcePolicy({policy:"cross-origin"}))
+
+  app.enableCors({
+    allowedHeaders: '*',
+    origin: '*',
+    credentials: true,
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
