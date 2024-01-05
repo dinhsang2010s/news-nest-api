@@ -7,13 +7,14 @@ import {
   Param,
   Res,
   HttpCode,
-  HttpStatus,
+  HttpStatus, Delete, BadRequestException,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { v4 as uuidv4 } from 'uuid';
 import { join, parse } from 'path';
+import fs from 'fs';
 import { Public } from '../../guards/objects';
 
 export const storage = {
@@ -35,8 +36,8 @@ export class UploadController {
   constructor() {}
 
   @Get(':id')
-  @Public()
   @HttpCode(HttpStatus.OK)
+  @Public()
   getFile(@Param('id') id: string, @Res() res) {
     return res.sendFile(join(process.cwd(), 'wp-contents/' + id));
   }
@@ -45,5 +46,14 @@ export class UploadController {
   @UseInterceptors(FileInterceptor('file', storage))
   uploadFile(@UploadedFile() file): { fileName: string } {
     return { fileName:  file.filename };
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  deleteFile(@Param('id') id: string) {
+    const  pathFile=join(process.cwd(), 'wp-contents/' + id)
+    fs.unlink(pathFile, (err)=>{
+      if(err) console.log(err);
+    })
   }
 }
