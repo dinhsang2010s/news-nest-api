@@ -7,7 +7,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 export class UserController {
   @Get('profile')
   @HttpCode(HttpStatus.OK)
-  getProfile(@Request() req) {
+  getProfile(@Request() req: Request & { user: RequestUser }) {
     return req.user;
   }
 }

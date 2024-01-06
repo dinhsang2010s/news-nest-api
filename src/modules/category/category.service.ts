@@ -4,11 +4,11 @@ import { Model } from 'mongoose';
 import {
   CategoryDto,
   QueryPaginationDto,
-} from 'src/dtos/request.dtos/request.dtos';
-import { ICategory } from 'src/dtos/response.dtos/category';
-import { Pagination } from 'src/dtos/response.dtos/pagination';
+} from 'src/models/dtos/request.dtos/request.dtos';
+import { ICategory } from 'src/models/dtos/response.dtos/category';
+import { Pagination } from 'src/models/dtos/response.dtos/pagination';
 import { CategoryInterface } from 'src/interfaces/category.interface';
-import { Category } from 'src/schemas/category.schema';
+import { Category } from 'src/models/schemas/category.schema';
 
 @Injectable()
 export class CategoryService implements CategoryInterface {
@@ -76,26 +76,26 @@ export class CategoryService implements CategoryInterface {
   }
 
   async getById(id: string): Promise<ICategory> {
-    return await this.categories.findById(id);
+    return this.categories.findById(id);
   }
 
   async update(catId: string, model: CategoryDto): Promise<ICategory> {
-    if (!catId || catId === '') {
+    if (catId)
+      return this.categories.findByIdAndUpdate({ _id: catId }, model, {
+        new: true,
+      });
+    else {
       const cat = await this.categories.findOne({ name: model.name });
       if (cat)
         throw new BadRequestException(
           `Category [ ${model.name} ] already exists`,
         );
 
-      return await this.categories.create(model);
+      return this.categories.create(model);
     }
-
-    return await this.categories.findByIdAndUpdate({ _id: catId }, model, {
-      new: true,
-    });
   }
 
   async delete(catId: string): Promise<void> {
-    await this.categories.deleteOne({ _id: catId });
+    this.categories.deleteOne({ _id: catId });
   }
 }

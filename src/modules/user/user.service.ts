@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { RegisterDto } from 'src/dtos/request.dtos/request.dtos';
-import { IUser } from 'src/dtos/response.dtos/user';
-import { User } from 'src/schemas/user.schema';
+import { RegisterDto } from 'src/models/dtos/request.dtos/request.dtos';
+import { IUser } from 'src/models/dtos/response.dtos/user';
+import { User } from 'src/models/schemas/user.schema';
 
 @Injectable()
 export class UserService {
@@ -13,7 +13,7 @@ export class UserService {
   ) {}
 
   async getOne(name: string): Promise<IUser> {
-    return await this.users.findOne({ name });
+    return this.users.findOne({ name });
   }
 
   async add(registerDto: RegisterDto): Promise<void> {

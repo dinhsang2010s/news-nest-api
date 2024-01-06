@@ -18,8 +18,8 @@ import { CategoryService } from './category.service';
 import {
   CategoryDto,
   QueryPaginationDto,
-} from 'src/dtos/request.dtos/request.dtos';
-import { Status } from 'src/schemas/enums';
+} from 'src/models/dtos/request.dtos/request.dtos';
+import { Status } from 'src/models/enums';
 
 @ApiTags('Category')
 @Controller('categories')
@@ -40,7 +40,10 @@ export class CategoryController {
 
   @Post('')
   @HttpCode(HttpStatus.OK)
-  async add(@Request() req, @Body() model: CategoryDto) {
+  async add(
+    @Request() req: Request & { user: RequestUser },
+    @Body() model: CategoryDto,
+  ) {
     return await this.categoryService.update('', {
       ...model,
       status: model.status ?? Status.Running,
@@ -54,7 +57,7 @@ export class CategoryController {
   async update(
     @Param('id') id: string,
     @Body() model: CategoryDto,
-    @Request() req,
+    @Request() req: Request & { user: RequestUser },
   ) {
     return await this.categoryService.update(id, {
       ...model,

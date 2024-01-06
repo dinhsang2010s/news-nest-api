@@ -1,6 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
-import { LoginDto, RegisterDto } from 'src/dtos/request.dtos/request.dtos';
+import {
+  LoginDto,
+  RegisterDto,
+} from 'src/models/dtos/request.dtos/request.dtos';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 
@@ -27,7 +30,7 @@ export class AuthService {
     const user = await this.userService.getOne(name);
     if (!user) throw new UnauthorizedException('Invalid username or password!');
 
-    const isPasswordMatched = await bcrypt.compareSync(password, user.password);
+    const isPasswordMatched = await bcrypt.compare(password, user.password);
     if (!isPasswordMatched)
       throw new UnauthorizedException('Invalid username or password!');
 

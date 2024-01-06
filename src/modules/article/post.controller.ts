@@ -10,8 +10,6 @@ import {
   Put,
   Query,
   Request,
-  UploadedFile,
-  UseInterceptors,
 } from '@nestjs/common';
 import { Public } from 'src/guards/objects';
 import { ApiTags } from '@nestjs/swagger';
@@ -19,26 +17,8 @@ import { ArticleService } from './post.service';
 import {
   ArticleDto,
   QueryPaginationDto,
-} from 'src/dtos/request.dtos/request.dtos';
-import { Status } from 'src/schemas/enums';
-import path = require('path');
-import { diskStorage } from 'multer';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Observable, of } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
-
-export const storage = {
-  storage: diskStorage({
-    destination: './uploads',
-    filename: (req, file, cb) => {
-      const filename: string =
-        path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
-      const extension: string = path.parse(file.originalname).ext;
-
-      cb(null, `${filename}${extension}`);
-    },
-  }),
-};
+} from 'src/models/dtos/request.dtos/request.dtos';
+import { Status } from '../../models/enums';
 
 @ApiTags('Article')
 @Controller('articles')
@@ -60,7 +40,10 @@ export class ArticleController {
 
   @Post('')
   @HttpCode(HttpStatus.OK)
-  async add(@Request() req, @Body() model: ArticleDto) {
+  async add(
+    @Request() req: Request & { user: RequestUser },
+    @Body() model: ArticleDto,
+  ) {
     return await this.articleService.update('', {
       ...model,
       status: model.status ?? Status.Running,
@@ -73,7 +56,7 @@ export class ArticleController {
   @HttpCode(HttpStatus.OK)
   async update(
     @Param('id') id: string,
-    @Request() req,
+    @Request() req: Request & { user: RequestUser },
     @Body() model: ArticleDto,
   ) {
     return this.articleService.update(id, {
@@ -87,11 +70,5 @@ export class ArticleController {
   @HttpCode(HttpStatus.OK)
   async delete(@Param('id') id: any) {
     await this.articleService.delete(id);
-  }
-
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file', storage))
-  uploadFile(@UploadedFile() file): Observable<{ pathImage: string }> {
-    return of({ pathImage: file.pathImage });
   }
 }

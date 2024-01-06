@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Pagination } from 'src/dtos/response.dtos/pagination';
+import { Pagination } from 'src/models/dtos/response.dtos/pagination';
 import {
   ArticleDto,
   QueryPaginationDto,
-} from 'src/dtos/request.dtos/request.dtos';
-import { IArticle } from 'src/dtos/response.dtos/article';
-import { Article } from 'src/schemas/article.schams';
+} from 'src/models/dtos/request.dtos/request.dtos';
+import { IArticle } from 'src/models/dtos/response.dtos/article';
+import { Article } from 'src/models/schemas/article.schams';
 import { ArticleInterface } from 'src/interfaces/article.interface';
 
 @Injectable()
@@ -129,7 +129,6 @@ export class ArticleService implements ArticleInterface {
           id: '$_id',
           title: 1,
           description: 1,
-          content: 1,
           imageTopic: 1,
           categoryId: '$cat._id',
           categoryName: '$cat.name',
@@ -150,20 +149,19 @@ export class ArticleService implements ArticleInterface {
     };
   }
 
-  async getById(id: string): Promise<IArticle> {
-    return await this.articles.findById(id);
+  async getContentById(id: string): Promise<IArticle> {
+    return this.articles.findById(id);
   }
-
+  
   async update(articleId: string, model: ArticleDto): Promise<IArticle> {
-    if (!articleId || articleId === '')
-      return await this.articles.create({ ...model });
-
-    return await this.articles.findOneAndUpdate({ _id: articleId }, model, {
-      new: true,
-    });
+    if (articleId)
+      return this.articles.findByIdAndUpdate({ _id: articleId }, model, {
+        new: true,
+      });
+    else return await this.articles.create({ ...model });
   }
 
   async delete(articleId: string): Promise<void> {
-    await this.articles.deleteOne({ _id: articleId });
+    this.articles.deleteOne({ _id: articleId });
   }
 }

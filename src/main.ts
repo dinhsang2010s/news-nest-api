@@ -14,23 +14,18 @@ async function bootstrap() {
   app.use(
     helmet.contentSecurityPolicy({
       directives: {
-        "default-src": ["'self'"],
-        "connect-src": ["'self'", "'unsafe-inline'"],
-        "img-src": ["'self'", "data:"],
-        "style-src-elem": ["'self'", "data:"],
-        "script-src": ["'unsafe-inline'", "'self'"],
-        "object-src": ["'none'"],
+        'default-src': ["'self'"],
+        'connect-src': ["'self'", "'unsafe-inline'"],
+        'img-src': ["'self'", 'data:'],
+        'style-src-elem': ["'self'", 'data:'],
+        'script-src': ["'unsafe-inline'", "'self'"],
+        'object-src': ["'none'"],
       },
-    })
+    }),
   );
 
-  app.use(helmet.crossOriginResourcePolicy({policy:"cross-origin"}))
-
-  app.enableCors({
-    allowedHeaders: '*',
-    origin: '*',
-    credentials: true,
-  });
+  app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
+  app.enableCors();
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -63,4 +58,5 @@ async function bootstrap() {
     module.hot.dispose(() => app.close());
   }
 }
+
 bootstrap();

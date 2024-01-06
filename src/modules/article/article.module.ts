@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Article, ArticleSchema } from 'src/schemas/article.schams';
+import { Article, ArticleSchema } from 'src/models/schemas/article.schams';
 import { ArticleService } from './post.service';
 import { ArticleController } from './post.controller';
 
