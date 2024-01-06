@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { Public } from 'src/guards/objects';
 import { ApiTags } from '@nestjs/swagger';
-import { ArticleService } from './post.service';
+import { ArticleService } from './article.service';
 import {
   ArticleDto,
   QueryPaginationDto,
@@ -29,13 +29,6 @@ export class ArticleController {
   @HttpCode(HttpStatus.OK)
   async getPagination(@Query() query: QueryPaginationDto) {
     return await this.articleService.getPagination(query);
-  }
-
-  @Get(':id')
-  @Public()
-  @HttpCode(HttpStatus.OK)
-  async getById(@Param('id') id: string) {
-    return await this.articleService.getById(id);
   }
 
   @Post('')
