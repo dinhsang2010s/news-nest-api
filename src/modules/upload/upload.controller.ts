@@ -9,7 +9,6 @@ import {
   HttpCode,
   HttpStatus,
   Delete,
-  BadRequestException,
 } from '@nestjs/common';
 import { ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
@@ -18,7 +17,6 @@ import { v4 as unitId } from 'uuid';
 import { join, parse } from 'path';
 import { Public } from '../../guards/objects';
 import { type Response } from 'express';
-import * as path from 'path';
 
 const fs = require('fs').promises;
 
