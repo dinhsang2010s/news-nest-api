@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { Pagination } from 'src/models/dtos/response.dtos/pagination';
 import {
   ArticleDto,
-  QueryPaginationDto,
+  QueryPaginationArticleDto,
 } from 'src/models/dtos/request.dtos/request.dtos';
 import { IArticle } from 'src/models/dtos/response.dtos/article';
 import { Article } from 'src/models/schemas/article.schams';
@@ -18,18 +18,30 @@ export class ArticleService implements ArticleInterface {
   ) {}
 
   async getPagination(
-    query: QueryPaginationDto,
+    query: QueryPaginationArticleDto,
   ): Promise<Pagination<IArticle[]>> {
-    const { offset, pageSize, orderBy, q } = query;
-    const searchQ = {
-      title: {
-        $regex: q,
-        $options: 'i',
-      },
-    };
+    const { offset, pageSize, orderBy, q, categoryId } = query;
+    let match = {};
+
+    if (categoryId) {
+      match = {
+        ...match,
+        categoryId: categoryId,
+      };
+    }
+
+    if (q) {
+      match = {
+        ...match,
+        title: {
+          $regex: q,
+          $options: 'i',
+        },
+      };
+    }
 
     const data = await this.articles.aggregate([
-      { $match: q ? searchQ : {} },
+      { $match: match },
       { $sort: { [orderBy || 'createdAt']: -1 } },
       { $skip: parseInt(offset) },
       { $limit: parseInt(pageSize) },
@@ -152,7 +164,7 @@ export class ArticleService implements ArticleInterface {
   async getContentById(id: string): Promise<IArticle> {
     return this.articles.findById(id);
   }
-  
+
   async update(articleId: string, model: ArticleDto): Promise<IArticle> {
     if (articleId)
       return this.articles.findByIdAndUpdate({ _id: articleId }, model, {

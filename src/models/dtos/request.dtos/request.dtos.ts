@@ -142,3 +142,14 @@ export class ArticleDto {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export class QueryPaginationArticleDto extends QueryPaginationDto {
+  @IsString()
+  @ApiProperty({
+    type: 'string',
+    description: '123456abc',
+    default: '',
+    required: false,
+  })
+  categoryId?: string = '';
+}

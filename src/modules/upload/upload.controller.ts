@@ -11,13 +11,14 @@ import {
   Delete,
   BadRequestException,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { v4 as unitId } from 'uuid';
 import { join, parse } from 'path';
 import { Public } from '../../guards/objects';
 import { type Response } from 'express';
+import * as path from 'path';
 
 const fs = require('fs').promises;
 
@@ -55,11 +56,14 @@ export class UploadController {
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   async deleteFile(@Param('id') id: string) {
-    try {
-      await fs.unlink(join(process.cwd(), 'wp-contents/' + id));
+    const pathFile = join(process.cwd(), 'wp-contents/' + id);
+    const isEx = await fs.exists(pathFile);
+
+    if (isEx) {
+      await fs.unlink(pathFile);
       return ApiOkResponse();
-    } catch (err) {
-      throw new BadRequestException(err?.message);
     }
+
+    return ApiNoContentResponse();
   }
 }
