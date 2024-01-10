@@ -7,8 +7,9 @@ import {
   QueryPaginationArticleDto,
 } from 'src/models/dtos/request.dtos/request.dtos';
 import { IArticle } from 'src/models/dtos/response.dtos/article';
-import { Article } from 'src/models/schemas/article.schams';
+import { Article } from 'src/models/schemas/article.schema';
 import { ArticleInterface } from 'src/interfaces/article.interface';
+import { UploadService } from '../upload/upload.service';
 
 @Injectable()
 export class ArticleService implements ArticleInterface {
@@ -166,14 +167,18 @@ export class ArticleService implements ArticleInterface {
   }
 
   async update(articleId: string, model: ArticleDto): Promise<IArticle> {
-    if (articleId)
+    if (articleId) {
       return this.articles.findByIdAndUpdate({ _id: articleId }, model, {
         new: true,
       });
-    else return await this.articles.create({ ...model });
+    } else return this.articles.create({ ...model });
   }
 
   async delete(articleId: string): Promise<void> {
-    this.articles.deleteOne({ _id: articleId });
+    await this.articles.deleteOne({ _id: articleId });
+  }
+
+  async getCountByCategoryId(categoryId: string): Promise<number> {
+    return this.articles.count({ categoryId });
   }
 }

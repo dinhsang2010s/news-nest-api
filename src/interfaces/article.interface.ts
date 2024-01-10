@@ -13,4 +13,6 @@ export interface ArticleInterface {
   update(postId: string, model: ArticleDto): Promise<IArticle>;
 
   delete(postId: string): Promise<void>;
+
+  getCountByCategoryId(categoryId: string): Promise<number>;
 }

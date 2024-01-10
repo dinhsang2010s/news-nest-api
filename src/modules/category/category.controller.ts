@@ -35,7 +35,7 @@ export class CategoryController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async getById(@Param('id') id: string) {
-    await this.categoryService.getById(id);
+    return await this.categoryService.getById(id);
   }
 
   @Post('')

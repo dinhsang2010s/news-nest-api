@@ -153,3 +153,13 @@ export class QueryPaginationArticleDto extends QueryPaginationDto {
   })
   categoryId?: string = '';
 }
+
+export class ImageTopicDto {
+  @IsString()
+  @IsNotEmpty()
+  articleId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  url: string;
+}

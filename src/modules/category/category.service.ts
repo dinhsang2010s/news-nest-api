@@ -9,12 +9,16 @@ import { ICategory } from 'src/models/dtos/response.dtos/category';
 import { Pagination } from 'src/models/dtos/response.dtos/pagination';
 import { CategoryInterface } from 'src/interfaces/category.interface';
 import { Category } from 'src/models/schemas/category.schema';
+import { ArticleService } from '../article/article.service';
+import { Article } from '../../models/schemas/article.schema';
+import { IArticle } from '../../models/dtos/response.dtos/article';
 
 @Injectable()
 export class CategoryService implements CategoryInterface {
   constructor(
     @InjectModel(Category.name)
     private categories: Model<ICategory>,
+    private articleService: ArticleService,
   ) {}
 
   async getPagination(
@@ -96,6 +100,9 @@ export class CategoryService implements CategoryInterface {
   }
 
   async delete(catId: string): Promise<void> {
-    this.categories.deleteOne({ _id: catId });
+    const count = await this.articleService.getCountByCategoryId(catId);
+    if (count > 0)
+      throw new BadRequestException('can not delete this category');
+    await this.categories.deleteOne({ _id: catId });
   }
 }

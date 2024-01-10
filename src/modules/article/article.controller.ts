@@ -19,11 +19,15 @@ import {
   QueryPaginationDto,
 } from 'src/models/dtos/request.dtos/request.dtos';
 import { Status } from '../../models/enums';
+import { UploadService } from '../upload/upload.service';
 
 @ApiTags('Article')
 @Controller('articles')
 export class ArticleController {
-  constructor(private articleService: ArticleService) {}
+  constructor(
+    private articleService: ArticleService,
+    private uploadService: UploadService,
+  ) {}
 
   @Get('')
   @HttpCode(HttpStatus.OK)
@@ -37,12 +41,19 @@ export class ArticleController {
     @Request() req: Request & { user: RequestUser },
     @Body() model: ArticleDto,
   ) {
-    return await this.articleService.update('', {
+    const article = await this.articleService.update('', {
       ...model,
       status: model.status ?? Status.Running,
       createdBy: req.user.id,
       createdAt: new Date(),
     });
+
+    await this.uploadService.update({
+      articleId: article.id,
+      url: article.imageTopic,
+    });
+
+    return article;
   }
 
   @Put(':id')
@@ -52,10 +63,15 @@ export class ArticleController {
     @Request() req: Request & { user: RequestUser },
     @Body() model: ArticleDto,
   ) {
-    return this.articleService.update(id, {
+    const article = await this.articleService.update(id, {
       ...model,
       updatedBy: req.user.id,
       updatedAt: new Date(),
+    });
+
+    await this.uploadService.update({
+      articleId: article.id,
+      url: article.imageTopic,
     });
   }
 

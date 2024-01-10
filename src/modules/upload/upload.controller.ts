@@ -9,23 +9,22 @@ import {
   HttpCode,
   HttpStatus,
   Delete,
+  Query,
 } from '@nestjs/common';
-import { ApiNoContentResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { v4 as unitId } from 'uuid';
-import { join, parse } from 'path';
+import { parse } from 'path';
 import { Public } from '../../guards/objects';
 import { type Response } from 'express';
-
-const fs = require('fs').promises;
+import { UploadService } from './upload.service';
 
 export const storage = {
   storage: diskStorage({
     destination: './wp-contents',
     filename: (req, file, cb) => {
-      const filename: string =
-        parse(file.originalname).name.replace(/\s/g, '') + unitId();
+      const filename: string = unitId();
       const extension: string = parse(file.originalname).ext;
 
       cb(null, `${filename}${extension}`);
@@ -36,32 +35,24 @@ export const storage = {
 @ApiTags('Upload')
 @Controller('Wp-contents')
 export class UploadController {
-  constructor() {}
+  constructor(private uploadService: UploadService) {}
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @Public()
   getFile(@Param('id') id: string, @Res() res: Response) {
-    return res.sendFile(join(process.cwd(), 'wp-contents/' + id));
+    this.uploadService.getFile(id, res);
   }
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', storage))
   uploadFile(@UploadedFile() file: Express.Multer.File): { fileName: string } {
-    return { fileName: file.filename };
+    return this.uploadService.uploadFile(file);
   }
 
-  @Delete(':id')
+  @Delete()
   @HttpCode(HttpStatus.OK)
-  async deleteFile(@Param('id') id: string) {
-    const pathFile = join(process.cwd(), 'wp-contents/' + id);
-    const isEx = await fs.exists(pathFile);
-
-    if (isEx) {
-      await fs.unlink(pathFile);
-      return ApiOkResponse();
-    }
-
-    return ApiNoContentResponse();
+  async deleteFile(@Query() query: { imageUri: string }) {
+    await this.uploadService.deleteFile(query);
   }
 }
