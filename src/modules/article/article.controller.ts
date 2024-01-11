@@ -50,7 +50,7 @@ export class ArticleController {
 
     await this.uploadService.update({
       articleId: article.id,
-      url: article.imageTopic,
+      fileNameUId: article.imageTopic?.split('/').pop(),
     });
 
     return article;
@@ -71,8 +71,10 @@ export class ArticleController {
 
     await this.uploadService.update({
       articleId: article.id,
-      url: article.imageTopic,
+      fileNameUId: article.imageTopic?.split('/').pop(),
     });
+
+    return article;
   }
 
   @Delete(':id')

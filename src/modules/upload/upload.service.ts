@@ -24,10 +24,8 @@ export class UploadService {
     else await this.images.create(model);
   }
 
-  async deleteFile(query: { imageUri: string }) {
-    const { imageUri } = query;
-    const fileName: string = imageUri?.split('/').pop();
-    const imgTopic = await this.images.findOne({ url: imageUri });
+  async deleteFile(fileName: string) {
+    const imgTopic = await this.images.findOne({ fileNameUId: fileName });
     if (!imgTopic) {
       const pathFile = join(process.cwd(), 'wp-contents/' + fileName);
       await fs.unlink(pathFile);

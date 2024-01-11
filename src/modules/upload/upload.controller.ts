@@ -33,7 +33,7 @@ export const storage = {
 };
 
 @ApiTags('Upload')
-@Controller('Wp-contents')
+@Controller('wp-contents')
 export class UploadController {
   constructor(private uploadService: UploadService) {}
 
@@ -50,9 +50,9 @@ export class UploadController {
     return this.uploadService.uploadFile(file);
   }
 
-  @Delete()
+  @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  async deleteFile(@Query() query: { imageUri: string }) {
-    await this.uploadService.deleteFile(query);
+  async deleteFile(@Param('id') id: string) {
+    await this.uploadService.deleteFile(id);
   }
 }

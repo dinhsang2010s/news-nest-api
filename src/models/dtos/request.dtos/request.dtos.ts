@@ -161,5 +161,5 @@ export class ImageTopicDto {
 
   @IsNotEmpty()
   @IsString()
-  url: string;
+  fileNameUId: string;
 }
